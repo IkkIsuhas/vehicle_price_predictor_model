@@ -1,68 +1,109 @@
-# Vehicle Price Predictor - Streamlit App
+# 🚗 Vehicle Price Predictor
 
-A machine learning web application that predicts vehicle prices based on various features using a Random Forest model.
+A machine learning–powered web application that predicts the **estimated price of a vehicle** based on its features such as year, mileage, make, model, fuel type, and more.  
+The project uses a **Random Forest Regression model** with a full **scikit-learn pipeline** and a **Streamlit-based UI** for real-time predictions.
 
-## Features
+---
 
-- **Interactive UI**: Easy-to-use interface with dropdown selections for all vehicle features
-- **Real-time Predictions**: Instant price predictions as you select vehicle options
-- **Comprehensive Inputs**: 
-  - Basic info: Year, cylinders, mileage, doors
-  - Vehicle details: Make, model, engine, fuel type, transmission
-  - Appearance: Trim, body type, exterior/interior colors, drivetrain
-- **Visual Feedback**: Color-coded price ranges and formatted predictions
-- **Model Information**: Sidebar with dataset statistics and model details
+## 🔍 Project Overview
 
-## How to Run
+- **Problem Type:** Regression  
+- **Goal:** Predict vehicle prices accurately using historical data  
+- **Approach:** End-to-end ML pipeline (preprocessing → model → deployment)  
+- **Deployment:** Streamlit Web Application  
+- **Model Persistence:** `joblib`
 
-1. **Install Dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
+---
 
-2. **Train the Model** (if not already done):
-   ```bash
-   python vehicle.py
-   ```
-   This will create `vehicle_price_model.pkl`
+## 🧠 Machine Learning Approach
 
-3. **Run the Streamlit App**:
-   ```bash
-   streamlit run streamlit_app.py
-   ```
+### Model Used
+- **Random Forest Regressor**
+- Hyperparameter tuning using **RandomizedSearchCV**
+- Cross-validation for better generalization
 
-4. **Open in Browser**: The app will automatically open at `http://localhost:8501`
+### Why Random Forest?
+- Handles **non-linear relationships**
+- Works well with **mixed numerical & categorical features**
+- Robust against overfitting
 
-## Usage
+---
 
-1. Select vehicle features using the dropdown menus
-2. Click "🔮 Predict Price" button
-3. View the predicted price with color-coded formatting
-4. Check sidebar for additional information and statistics
+## 🛠️ Data Preprocessing
 
-## Model Details
+### Numerical Features
+- `year`
+- `cylinders`
+- `mileage`
+- `doors`
 
-- **Algorithm**: Random Forest Regressor
-- **Features**: 15 input features (4 numerical, 11 categorical)
-- **Preprocessing**: StandardScaler for numerical features, OrdinalEncoder for categorical features
-- **Hyperparameter Tuning**: RandomizedSearchCV with 5-fold cross-validation
+**Steps:**
+- Missing values → `SimpleImputer (mean)`
+- Feature scaling → `StandardScaler`
 
-## File Structure
+### Categorical Features
+- `name`, `make`, `model`
+- `engine`, `fuel`, `transmission`
+- `trim`, `body`
+- `exterior_color`, `interior_color`, `drivetrain`
 
+**Steps:**
+- Missing values → `SimpleImputer (most_frequent)`
+- Encoding → `OrdinalEncoder`
+- Handles unseen categories safely
+
+### Pipeline Design
+All preprocessing and modeling steps are combined using:
+- `Pipeline`
+- `ColumnTransformer`
+
+This ensures **clean training and inference consistency**.
+
+---
+
+## 📊 Model Evaluation Metrics
+
+The model was evaluated on a held-out test set using:
+
+- **Mean Squared Error (MSE)**
+- **Mean Absolute Error (MAE)**
+- **R² Score**
+
+These metrics help measure prediction accuracy and error magnitude.
+
+---
+
+## 🧪 Training Workflow
+
+1. Load and clean dataset
+2. Remove outliers (price & mileage)
+3. Define preprocessing pipelines
+4. Train model with hyperparameter tuning
+5. Evaluate on test data
+6. Save trained model using `joblib`
+
+---
+
+## 💾 Model Saving
+
+The final trained model (including preprocessing steps) is saved as:
+
+vehicle_price_model.pkl
+
+## ▶️ How to Run the Project
+
+### 1️⃣ Clone the Repository
+```bash
+git clone https://github.com/your-username/vehicle-price-predictor.git
+cd vehicle-price-predictor
 ```
-├── vehicle.py              # Model training script
-├── streamlit_app.py        # Streamlit web application
-├── dataset.csv             # Vehicle dataset
-├── vehicle_price_model.pkl  # Trained model (created after training)
-├── requirements.txt        # Python dependencies
-└── README.md              # This file
+
+## Install Dependencies
+```bash
+pip install -r requirements.txt
 ```
 
-## Requirements
-
-- Python 3.8+
-- Streamlit
-- Pandas
-- Scikit-learn
-- Joblib
-- NumPy
+Run the Streamlit App
+```bash
+streamlit run app.py
+```
